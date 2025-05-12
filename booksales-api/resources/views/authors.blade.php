@@ -6,11 +6,12 @@
     <title>Tugas 3 PHP Booksales</title>
 </head>
 <body>
-    <h1>Data Genre Buku</h1>
+    <h1>Data Author Buku</h1>
     <ul>
-        @foreach($genres as $genre)
-            <li>{{ $genre['name'] }}</li>
-            <li>{{ $genre['description'] }}</li>
+        @foreach($authors as $author)
+            <li>{{ $author['name'] }}</li>
+            <li>{{ $author['photo '] }}</li>
+            <li>{{ $author['bio'] }}</li>
         @endforeach
     </ul>
 </body>
