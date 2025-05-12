@@ -11,7 +11,7 @@
         @foreach($books as $book)
             <li>{{ $book['title'] }}</li>
             <li>{{ $book['description'] }}</li>
-            <li>{{ $book['price '] }}</li>
+            <li>{{ $book['price'] }}</li>
             <li>{{ $book['stock'] }}</li>
             <li>{{ $book['cover_photo'] }}</li>
             <li>{{ $book['genre_id'] }}</li>
