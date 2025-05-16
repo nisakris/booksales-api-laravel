@@ -1,17 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tugas 3 PHP Booksales</title>
-</head>
-<body>
-    <h1>Data Genre Buku</h1>
-    <ul>
-        @foreach($genres as $genre)
-            <li>{{ $genre['name'] }}</li>
-            <li>{{ $genre['description'] }}</li>
+@extends('nav')
+
+@section('content')
+<h1>Genres</h1>
+<table class="table table-bordered table-genres">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($genres as $genre)
+        <tr>
+            <td>{{ $genre->name }}</td>
+            <td>{{ $genre->description }}</td>
+        </tr>
         @endforeach
-    </ul>
-</body>
-</html>
+    </tbody>
+</table>
+@endsection

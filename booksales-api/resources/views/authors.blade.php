@@ -1,18 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tugas 3 PHP Booksales</title>
-</head>
-<body>
-    <h1>Data Author Buku</h1>
-    <ul>
-        @foreach($authors as $author)
-            <li>{{ $author['name'] }}</li>
-            <li>{{ $author['photo '] }}</li>
-            <li>{{ $author['bio'] }}</li>
+@extends('nav')
+
+@section('content')
+<h1>Authors</h1>
+<table class="table table-bordered table-authors">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Photo</th>
+            <th>Bio</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($authors as $author)
+        <tr>
+            <td>{{ $author->name }}</td>
+            <td>{{ $author->photo }}</td>
+            <td>{{ $author->bio }}</td>
+        </tr>
         @endforeach
-    </ul>
-</body>
-</html>
+    </tbody>
+</table>
+@endsection

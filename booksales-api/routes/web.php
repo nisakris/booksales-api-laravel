@@ -8,6 +8,6 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/', function () {
 //     return view('books');
 // });
-Route::get('/', [BookController::class, 'index']);
-Route::get('/genres', [GenreController::class, 'index']);
-Route::get('/authors', [AuthorController::class, 'index']);
+Route::get('/', [BookController::class, 'index'])->name('books.index');
+Route::get('/authors', [AuthorController::class, 'index'])->name('authors.index');
+Route::get('/genres', [GenreController::class, 'index'])->name('genres.index');
