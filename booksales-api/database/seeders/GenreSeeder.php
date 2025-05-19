@@ -12,7 +12,7 @@ class GenreSeeder extends Seeder
      * Run the database seeds.
      */
     public function run(): void
-    {
+    { 
         Genre::create([
             'name' => 'Fiction', 'description' => 'A literary work based on the imagination and not necessary fact.'
         ]);
