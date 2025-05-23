@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Author;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class AuthorController extends Controller
@@ -75,8 +76,22 @@ class AuthorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Author $author)
+    public function show(string $id)
     {
+        $author = Author::find($id);
+
+        if (!$author) {
+            return response()->json([
+            'succsess' => false,
+            'messege' => "Resource not found",
+        ], 404);
+        }
+
+        return response()->json([
+            'succsess' => true,
+            'messege' => "Get detail resource",
+            'data' => $author
+        ], 200);
         //
     }
 
@@ -91,16 +106,84 @@ class AuthorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Author $author)
+    public function update(string $id, Request $request)
     {
-        //
+        // 1. cari data 
+        $author = Author::find($id);
+
+        if (!$author) {
+            return response()->json([
+            'succsess' => false,
+            'messege' => "Resource not found",
+        ], 404);
+        }
+
+        // 2. validasi 
+        $validator = Validator::make($request->all(), [
+            'name'  => 'required|string|max:100',
+            'photo' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
+            'bio'   => 'nullable|string',
+        ]);
+
+         if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()
+            ], 422);
+        }
+
+        // 3. siapkan data yang ingin diupdate
+        $data = [
+            'name' => $request->name,
+            'bio' => $request->bio,
+        ];
+
+        // 4. handel image (upload delete)
+        if ($request-> hasFile('photo')) {
+            $photo = $request->file('photo');
+            $photo->store('authors', 'public');
+
+            if ($author->photo){
+                Storage::disk('public')->delete('authors/' . $author->photo);
+            }
+
+            $data['photo'] = $photo->hasName();
+        }
+
+        // 5. update data ke db
+        $author->update($data);
+
+        return response()->json([
+            "succsess" => true,
+            "messege" => "Resourse updated successfully!",
+            "data" => $author
+        ], 200);
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Author $author)
+    public function destroy(string $id)
     {
-        //
+        $author = Author::find($id);
+
+        if (!$author) {
+            return response()->json([
+            'succsess' => false,
+            'messege' => "Resource not found",
+        ], 404);
+        }
+
+        if ($author->photo) {
+            Storage::disk('public')->delete('authors/' . $author->photo);
+        }
+
+        $author->delete();
+
+        return response()->json([
+            'succsess' => true,
+            'messege' => "Delee resource successfully",
+        ]);
     }
 }

@@ -54,7 +54,10 @@ class GenreController extends Controller
             ], 422);
         }
 
-        $genre = Genre::create($validator->validated());
+        $genre = Genre::create([
+            'name' => $request->name,
+            'description' => $request->description,
+        ]);
 
         return response()->json([
             'success' => true,
@@ -66,8 +69,22 @@ class GenreController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Genre $genre)
+    public function show(string $id)
     {
+        $genre = Genre::find($id);
+
+        if (!$genre) {
+            return response()->json([
+            'succsess' => false,
+            'messege' => "Resource not found",
+        ], 404);
+        }
+
+        return response()->json([
+            'succsess' => true,
+            'messege' => "Get detail resource",
+            'data' => $genre
+        ], 200);
         //
     }
 
@@ -82,16 +99,67 @@ class GenreController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Genre $genre)
+    public function update(string $id, Request $request)
     {
-        //
+        // 1. cari data 
+        $genre = Genre::find($id);
+
+        if (!$genre) {
+            return response()->json([
+            'succsess' => false,
+            'messege' => "Resource not found",
+        ], 404);
+        }
+
+        // 2. validasi 
+        $validator = Validator::make($request->all(), [
+            'name'        => 'required|string|max:100',
+            'description' => 'nullable|string'
+        ]);
+
+         if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()
+            ], 422);
+        }
+
+        // 3. siapkan data yang ingin diupdate
+        $data = [
+            'name' => $request->name,
+            'description' => $request->description,
+        ];
+
+        // 4. update data ke db
+        $genre->update($data);
+
+        return response()->json([
+            "succsess" => true,
+            "messege" => "Resourse updated successfully!",
+            "data" => $genre
+        ], 200);
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Genre $genre)
+    public function destroy(string $id)
     {
-        //
+        $genre = Genre::find($id);
+
+        if (!$genre) {
+            return response()->json([
+            'succsess' => false,
+            'messege' => "Resource not found",
+        ], 404);
+        }
+
+        $genre->delete();
+
+        return response()->json([
+            'succsess' => true,
+            'messege' => "Delee resource successfully",
+        ]);
     }
 }
