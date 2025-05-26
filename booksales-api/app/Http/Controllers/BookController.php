@@ -50,8 +50,8 @@ class BookController extends Controller
             'price' => 'required|numeric',
             'stock' => 'required|integer',
             'cover_photo' => 'required|image|mimes:jpeg,jpg,png|max:2048',
-            'genre_id' => 'required|exists:genres,id',
-            'author_id' => 'required|exists:authors,id',
+            'genres_id' => 'required|exists:genres,id',
+            'authors_id' => 'required|exists:authors,id',
         ]);
         // 2. check validator eror
         if ($validator->fails()) {
