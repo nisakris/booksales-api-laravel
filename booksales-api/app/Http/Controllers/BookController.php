@@ -201,7 +201,7 @@ class BookController extends Controller
 
         return response()->json([
             'succsess' => true,
-            'messege' => "Delee resource successfully",
+            'messege' => "Delete resource successfully",
         ]);
     }
 }
